@@ -19,7 +19,7 @@ n_neighbours=4;
 
 %% Inversion
 lap_weight = 0.018;
-inversion_flag='lsqlin';
+inversion_flag='LS'; % 'lsqlin'£¬ 'pinv'
 
 %% Plotting
 boundary_file='data/PNEB_border.dat';
