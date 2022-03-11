@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % lap_weight       smoothing factors
 
-lap_weight = [0.006:0.002:0.040];
+lap_weight = [0.006:0.003:0.042];
 
 for i=1:length(lap_weight)
     aa=sprintf('Smoothing factor: %5.3f', lap_weight(i));
@@ -18,7 +18,7 @@ figure('color',[1 1 1])
 plot(lap_weight,mean_res,'ro-.','linewidth',1.5);
 ylabel('CVSS (mm^2)','FontName','Times New Roman','FontSize',12)
 xlabel('Smoothing factor','FontName','Times New Roman','FontSize',12)
-set(gca,'xLim',[0.005 0.040]);
+set(gca,'xLim',[0.005 0.042]);
 
 saveas(gcf,'result/GCV_smoothing_factor.tiff');
 
@@ -38,26 +38,32 @@ function mean_res_all=GCV_smoothing_factor(Green,coeff,Lap,lap_weight,inversion_
 %   mean_res_all       Sum of squared residuals from cross validation
 %
 % Author: Zhongshan Jiang
-% Date: 28/10/2021 
+% Date: 10/03/2022 
 % Institution: Southwest Jiaotong University 
 % E-mail: jzshhh@my.swjtu.edu.cn
 
+pre_gps=nan(size(data_recon));
 for i=1:size(coeff,1)
+    % Remove one GNSS station in each loop
     Green_tmp=Green; Green_tmp(i,:)=[];
     GPS_data_tmp =coeff; GPS_data_tmp(i,:)=[];
+    % Do inversion model using remaining data points
     [ewh_pc]=inversion_ewh(Green_tmp,GPS_data_tmp,Lap,lap_weight,inversion_flag);
     ewh=scores*ewh_pc';
+    % Calculate prediction at the removed station
     pre_gps(:,i)=Green(i,:)*ewh';
 end
-for i=1:size(scores,1)
-    res_bos_pre(i,:)=((data_recon(i,:)-pre_gps(i,:))*10^3).^2;
-    mean_res(i,1)=mean(res_bos_pre(i,:));
-end
+% Calculate differences between GNSS data and model predictions
+res_bos_pre=((data_recon-pre_gps)*10^3).^2;
+% Calculate averages of obs-pre differences at all stations for each epoch
+mean_res=mean(res_bos_pre,2);
+% Calculate averages of the above differences at all epoches
 mean_res_all=mean(mean_res);
 end
 
 function [ewh]=inversion_ewh(A,obs,L,gamma,inversion_flag)
 A_L = [A;gamma*L];
+ewh=nan(size(A,2),size(obs,2));
 for i=1:size(obs,2)
     d=[obs(:,i); zeros(size(L,1),1)];
     ewh(:,i)=inversion_method(A_L,d,inversion_flag);

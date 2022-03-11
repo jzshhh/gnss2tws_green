@@ -12,16 +12,16 @@ function s=inversion_type(A,d,inversion_flag)
 % Author:       Zhongshan Jiang        
 % Organization: Southwest Jiaotong University 
 % E-mail:       jzshhh@my.swjtu.edu.cn
-% Date:         28/10/2021
+% Date:         10/03/2022
 
 switch(inversion_flag)
     case 'LS'
-        disp('Classical least-squares inversion');
+        disp('Classical least-squares inversion'); % Default algorithm
         s=A\d;
     case  'pinv'  
         disp('Pseudo inverse used');
         s=pinv(A) * d;
-    case 'lsqlin'
+    case 'lsqlin'  % using 'lsqlin' methed if Matlab's optimization toolbox is installed
         disp('Constrained linear least-squares inversion');
         options = optimset('LargeScale','on','DiffMaxChange',1e-1,'DiffMinChange',1e-9,'TolCon',1e-9,'TolFun',1e-9,'TolPCG',1e-9,'TolX',1e-9,'MaxIter',1e9,'MaxPCGIter',1e9,'Display','off');
         % lb=  -1.00*ones(size(A,2),1); ub= 1.00*ones(size(A,2),1); % using boundary constraints for model parameters

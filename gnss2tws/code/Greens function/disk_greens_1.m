@@ -12,27 +12,31 @@ function up=disk_greens(thet,lmax,love_h,alph_disk)
 %   up              Vertical displacement
 %
 % Author: Zhongshan Jiang
-% Date: 10/03/2022 
+% Date: 28/10/2021 
 % Institution: Southwest Jiaotong University 
 % E-mail: jzshhh@my.swjtu.edu.cn
 
 global gq;
-
-Pot=Potential(lmax+1,alph_disk);
+Pot=Potential(lmax,alph_disk);
 Pl=Legendre(lmax,thet);
-up=sum(love_h(1:lmax+1).*Pot(1:lmax+1).*Pl(1:lmax+1))/gq;
+up=0;
+
+for i=1:lmax+1
+    up=up+love_h(i)*Pot(i)*Pl(i)/gq;
+end
 end
 
-function Pot=Potential(n,alph)
+function Pot1=Potential(n,alph)
 % Gravity disturbance potential
 global Aq  Gq;
 Pl=Legendre(n,alph);
 mass=disk_mass(alph);
-Pot=NaN(n+1,1);
-Pot(1,1)=mass*Gq/Aq;
-
-i=2:n;
-Pot(i,1)=mass*Gq.*(Pl(i-1)-Pl(i+1))./(Aq*(1-cosd(alph))*(2*(i-1)+1))';
+Pot=NaN(1,n+1);
+Pot(1)=mass*Gq/Aq;
+for i=2:n+1
+    Pot(i)=mass*Gq*(Pl(i-1)-Pl(i+1))/(Aq*(1-cosd(alph))*(2*(i-1)+1));
+end
+Pot1=Pot';
 end
 
 function mass=disk_mass(alph)
@@ -41,14 +45,14 @@ global Aq pw;
 mass=1*pw*2*pi*(1-cosd(alph))*Aq^2;
 end
 
-function P=Legendre(n,deg)
+function P1=Legendre(n,deg)
 % Calculating legendre polynomial
-P=nan(n+2,1);
+P=NaN(1,n+2);
 x=cosd(deg);
 P(1)=1;
 P(2)=x;
 for i=3:n+2
     P(i)=((2*i-3)*x*P(i-1)-(i-2)*P(i-2))/(i-1);
 end
+P1=P';
 end
-

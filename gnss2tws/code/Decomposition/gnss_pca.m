@@ -13,14 +13,26 @@ function [coeff,score,var_explained_PCA,explained,data_recon]=gnss_pca(data_raw,
 %   data_recon       Reconstructed GNSS data
 % 
 % Author: Zhongshan Jiang
-% Date: 28/10/2021 
+% Date: 11/03/2022 
 % Institution: Southwest Jiaotong University 
 % E-mail: jzshhh@my.swjtu.edu.cn
 
 %% Implementing PCA decomposition, algorithm 'als'
 h=msgbox('Implement PCA decomposition, algorithm: ''als'', please wait!');
-opt = statset('pca'); opt.MaxIter = 1000; opt.Display = 'iter';
-[coeff,score,latent,tsquared,explained,mu] = pca(data_raw,'algorithm','als','Centered','off','NumComponents',num_pc,'Options',opt);
+
+%% Using built-in pca.m fucntion in Matlab's Statistics and Machine Learning Toolbox
+% opt = statset('pca'); opt.MaxIter = 2000; opt.Display = 'iter'; 
+% [coeff,score,latent,tsquared,explained,mu] = pca(data_raw,'algorithm','als','Centered','off','NumComponents',num_pc,'Options',opt);
+
+%% PCA decomposition using 'als' algorithm, which is modified according to the Matlab's built-in pca.m script
+Is_Centered=false; % Centralized observation matrix (true or false)
+% Options for als algorithm, including four parameters:
+%   'Display' - Level of display output.  Choices are 'off' (the default), 'final', and 'iter'.
+%   'MaxIter' - Maximum number of steps allowed. The default is 1000. Unlike in optimization settings, reaching MaxIter is regarded as convergence.
+%   'TolFun' - Positive number giving the termination tolerance for the cost function.  The default is 1e-6.
+%    'TolX' - Positive number giving the convergence threshold for relative change in the elements of L and R.The default is 1e-6.
+opt.MaxIter = 2000; opt.Display = 'iter';opt.TolFun = 1e-6; opt.TolX = 1e-6; 
+[coeff,score,latent,explained,mu] = pca_als(data_raw,num_pc,Is_Centered,opt); 
 data_recon = score*coeff' + repmat(mu,size(data_raw,1),1);
 
 %% Calcuating variance contribution of selected PCs to raw GNSS data

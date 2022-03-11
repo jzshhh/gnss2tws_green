@@ -13,10 +13,11 @@ function [ewh]=inversion_model(A,obs,L,gamma,inversion_flag)
 % Author:       Zhongshan Jiang        
 % Organization: Southwest Jiaotong University 
 % E-mail:       jzshhh@my.swjtu.edu.cn
-% Date:         28/10/2021
+% Date:         03/11/2022
 
 h=waitbar(0,'Inverting PCs for EWH...');
 A_L = [A;gamma*L];
+ewh=nan(size(A,2),size(obs,2));
 for i=1:size(obs,2)
     d=[obs(:,i); zeros(size(L,1),1)];
     % Perform the inversion for each EWH component with inversion_type
