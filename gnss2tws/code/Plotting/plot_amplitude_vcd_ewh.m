@@ -38,6 +38,8 @@ grid on
 title('VCD Amp. (mm)');
 set(gca,'xlim',[min(boundary(:,1))-0.25, max(boundary(:,1))+0.25],'ylim',[min(boundary(:,2))-0.25, max(boundary(:,2))+0.25]);
 
+% index=inpolygon(area_grid(:,1),area_grid(:,2),boundary(:,1),boundary(:,2));
+% ewh_amp(~index)=NaN;
 [X,Y]=meshgrid(long_range,lati_range);
 ewh_grid=griddata(area_grid(:,1),area_grid(:,2),ewh_amp,X,Y);
 
@@ -47,18 +49,10 @@ colormap(jet);
 hold on
 plot(boundary(:,1),boundary(:,2));
 colorbar;
-caxis([0 max(max(ewh_grid*1000))]);
+caxis([0 300]);
 grid on
 title('EWH Amp. (mm)');
 set(gca,'xlim',[min(boundary(:,1))-0.25, max(boundary(:,1))+0.25],'ylim',[min(boundary(:,2))-0.25, max(boundary(:,2))+0.25]);
 
 saveas(gcf,'result/Amp_VCD_EWH.tiff');
-end
-
-function amplitude=lsf_amplitude(time,data)
-%% Calculate annual amplitude of a time series
-A=[ones(length(data),1) time-time(1) cos(2*pi*time) sin(2*pi*time) cos(4*pi*time) sin(4*pi*time)];
-B=data;
-coeff=lscov(A,B);
-amplitude=(coeff(3,:).^2+coeff(4,:).^2).^0.5;
 end

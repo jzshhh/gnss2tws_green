@@ -2,7 +2,6 @@ clear;clc;
 
 %% Load original boundary data
 border = load('../../data/PNEB_border.dat'); 
-
 sta_info=importdata('../../data/sites.info');
 
 %% Generate a buffer with any radiuses for study area
@@ -11,7 +10,7 @@ polyout = polybuffer([border(:,1) border(:,2)],'lines',d);
 out = inpolygon(polyout.Vertices(:,1),polyout.Vertices(:,2),border(:,1),border(:,2));
 edge_points=[polyout.Vertices(~out,1) polyout.Vertices(~out,2)];
 
-d=0.25; % 0.5 degree buffer
+d=0.25; % 0.25 degree buffer
 polyout = polybuffer([border(:,1) border(:,2)],'lines',d);
 out = inpolygon(polyout.Vertices(:,1),polyout.Vertices(:,2),border(:,1),border(:,2));
 edge_points1=[polyout.Vertices(~out,1) polyout.Vertices(~out,2)];

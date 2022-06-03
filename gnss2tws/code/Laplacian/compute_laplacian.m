@@ -35,7 +35,7 @@ end
 % L2=[1  -2 1]
 ind_pts_edge=find_edges(area_grid);
 edge_neighbors = calc_neighbors(area_grid(ind_pts_edge,:),2);
-edge_model=[ind_pts_edge' edge_neighbors];
+edge_model=[ind_pts_edge' ind_pts_edge(edge_neighbors(:,1))' ind_pts_edge(edge_neighbors(:,2))'];
 for i=1:size(edge_model,1)
     Lap(edge_model(i,1),edge_model(i,1))=-2;
     Lap(edge_model(i,1),edge_model(i,2))=1;
@@ -44,6 +44,20 @@ for i=1:size(edge_model,1)
     waitbar(nn/size(area_grid,1),h)
 end
 close(h);
+
+%% plot to check
+% for i=1:size(Lap,1)
+%     h=figure(i);
+%     ok1=find(Lap(i,:)==1);
+%     ok2=find(Lap(i,:)<0);
+%     plot(area_grid(:,1),area_grid(:,2),'.k');
+%     hold on
+%     plot(area_grid(ok1,1),area_grid(ok1,2),'or');
+%     hold on
+%     plot(area_grid(ok2,1),area_grid(ok2,2),'og');
+%     close(h);
+% end
+
 end
 
 
