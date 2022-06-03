@@ -42,6 +42,7 @@ disp('Area model Completed');
 %%%  Determining smoothing factor
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % run('GCV_smooth_factor.m');
+% run('find_best_alpha_gcv.m');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Inversion
@@ -60,7 +61,6 @@ disp('Restructurion Finished');
 save result/gps_ewh.mat ewh GNSS_times area_grid;
 save result/vcd_ewh_pc.mat ewh_pc GNSS_times  GNSS_sites GNSS_positions coeff scores each_pc_explained area_grid;
 save result/obs_pre.mat GNSS_sites GNSS_positions GNSS_times GNSS_data data_recon data_pre;
-save Inversion_TWS.mat;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Plot/display information
@@ -70,7 +70,7 @@ run('plot_gnss2tws_results.m');
 run('checkerboard_test.m');
 disp('End all');
 
-close all;
+% close all;
 
 
 

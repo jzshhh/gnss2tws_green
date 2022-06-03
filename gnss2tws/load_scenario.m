@@ -18,7 +18,7 @@ study_area_border=load('data/PNEB_border_buffer.dat');
 n_neighbours=4;
 
 %% Inversion
-lap_weight = 0.018;
+lap_weight = 0.005;
 inversion_flag='LS'; % 'lsqlin'£¬ 'pinv'
 
 %% Plotting
