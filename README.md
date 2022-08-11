@@ -14,3 +14,5 @@ Kositsky, A.P., Avouac, J.P., 2010. Inverting geodetic time series with a princi
 Jiang, Z., Hsu, Y.-J., Yuan, L., Huang, D., 2021c. Monitoring time-varying terrestrial water storage changes using daily GNSS measurements in Yunnan, southwest China. Remote Sensing of Environment 254. doi: 10.1016/j.rse.2020.112249 
 
 Jiang, Z., Hsu, Y.J., Yuan, L., Yang, X., Ding, Y., Tang, M., Chen, C., 2021d. Characterizing Spatiotemporal Patterns of Terrestrial Water Storage Variations Using GNSS Vertical Data in Sichuan, China. Journal of Geophysical Research: Solid Earth 126. doi: 10.1029/2021jb022398
+
+Jiang Z., Hsu Y., Yuan L., Wei F., Yang X., Tang M.,  GNSS2TWS: an open-source MATLAB-based tool for inferring daily terrestrial water storage changes using GNSS vertical data, GPS Solutions. 2022c, 26:144. doi: 10.1007/s10291-022-01301-8
